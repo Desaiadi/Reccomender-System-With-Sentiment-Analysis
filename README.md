@@ -39,14 +39,14 @@ Auto suggetion is enabled, however if not suggested you should move ahead and pr
 ### Templates
 
    HTML: home.html and recommend.html define the structure and layout of the web pages served by Flask.
-     
-     
+          
 ## Summary of Key Features
 **Movie Recommendation:** Uses the TMDB API to fetch movie details.
 **Sentiment Analysis:** Implements a Naive Bayes model trained on movie reviews to analyze user sentiment.
 **Autocomplete Functionality:** Assists users in finding movie titles quickly.
 **Data Sources:** Combines local datasets and web-scraped reviews for a robust recommendation engine.
 
+## Using this project
 
 1. Clone or download this repository to your local machine.
 2. Download "credits.csv" and "movies_metadata.csv" from "https://www.kaggle.com/rounakbanik/the-movies-dataset"
