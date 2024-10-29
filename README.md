@@ -1,6 +1,6 @@
 # End-To-End Movie reccomender with Sentiment Analysis
 
-Content Based Recommender System recommends movies similar to the movie user likes and analyses the sentiments on the reviews given by the user for that movie.
+This project provides a comprehensive, integrated solution that combines a movie recommendation engine, information retrieval system, and sentiment analysis capabilities, all in one application.
 
 The details of the movies(title, genre, runtime, rating, poster, etc) are fetched using an API by TMDB, 
 Fetching - Title, Genre, Runtime, Rating Movie Poster : TMDB API KEY (https://www.themoviedb.org/documentation/api)
