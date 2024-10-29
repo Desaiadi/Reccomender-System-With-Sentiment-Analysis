@@ -13,32 +13,32 @@ Auto suggetion is enabled, however if not suggested you should move ahead and pr
 ## Project Structure and Key Components
 ### Main Project Files
 
-     main.py: Likely the main application file where the Flask server is set up, handling routes, and initiating the recommendation and sentiment analysis functions.
-     README.md: Contains project description, setup instructions, and usage details.
-     requirements.txt: Lists required Python libraries, allowing users to set up the environment with pip install -r requirements.txt.
-     Procfile: Used for deployment on platforms like Heroku, defining the process types.
+  main.py: Likely the main application file where the Flask server is set up, handling routes, and initiating the recommendation and sentiment analysis functions.
+  README.md: Contains project description, setup instructions, and usage details.
+  requirements.txt: Lists required Python libraries, allowing users to set up the environment with pip install -r requirements.txt.
+  Procfile: Used for deployment on platforms like Heroku, defining the process types.
 
 ### Datasets
 
-     datasets/ folder: Contains various CSV files (like data.csv, movie_metadata.csv, and main_data.csv) that store movie details and sentiment data needed for training and recommendations.
-     reviews.txt: Likely holds textual reviews for sentiment analysis.
+   datasets/ folder: Contains various CSV files (like data.csv, movie_metadata.csv, and main_data.csv) that store movie details and sentiment data needed for training and recommendations.
+   reviews.txt: Likely holds textual reviews for sentiment analysis.
      
 ### Models and Transformations
 
-     nlp_model.pkl and tranform.pkl: These files probably store the serialized Naive Bayes sentiment analysis model and the preprocessing transformations needed for text data.
+   nlp_model.pkl and tranform.pkl: These files probably store the serialized Naive Bayes sentiment analysis model and the preprocessing transformations needed for text data.
      
 ### Jupyter Notebooks
 
-     Files in .ipynb_checkpoints/ (e.g., preprocessing.ipynb and sentiment.ipynb) seem to be Jupyter notebooks that contain exploratory data analysis, data cleaning, or model training details.
+   Files in .ipynb_checkpoints/ (e.g., preprocessing.ipynb and sentiment.ipynb) seem to be Jupyter notebooks that contain exploratory data analysis, data cleaning, or model training details.
      
 ### Static Files
 
-     JavaScript: autocomplete.js and recommend.js handle front-end functionality for recommendations and search suggestions.
-     Images: image.jpg, krish-naik.PNG, and loader.gif are used for UI visuals.
-     CSS: style.css defines the styling for the application.
+   JavaScript: autocomplete.js and recommend.js handle front-end functionality for recommendations and search suggestions.
+   Images: image.jpg, krish-naik.PNG, and loader.gif are used for UI visuals.
+   CSS: style.css defines the styling for the application.
 ### Templates
 
-     HTML: home.html and recommend.html define the structure and layout of the web pages served by Flask.
+   HTML: home.html and recommend.html define the structure and layout of the web pages served by Flask.
      
      
 ## Summary of Key Features
