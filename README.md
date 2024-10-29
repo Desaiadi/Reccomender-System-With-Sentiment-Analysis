@@ -1,6 +1,6 @@
 # End-To-End Movie reccomender with Sentiment Analysis
 
-This project provides a comprehensive, integrated solution that combines a movie recommendation engine, information retrieval system, and sentiment analysis capabilities, all in one application.
+This Recommendation System with Sentiment Analysis is an integrated application that provides personalized movie suggestions using detailed data from the TMDB API, including titles, genres, and posters. It enhances user experience with a Naive Bayes sentiment analysis model trained on IMDb reviews, offering insights into viewer sentiment for each movie. An autocomplete feature further improves usability by helping users quickly locate desired titles. Combining local datasets with web-scraped reviews, this robust recommendation engine adapts to user preferences, creating an engaging, data-driven discovery experience.
 
 Tech Stack : Python, Flask, JavaScript, HTML, CSS, TMDB API, IMDb, BeautifulSoup, Pandas, Scikit-Learn, Cosine Similarity, Git, GitHub, Git LFS, Naive Bayes.
 
