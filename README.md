@@ -10,11 +10,43 @@ Revies Are Scrapped from : IMDB site using `beautifulsoup4` (using the IMDB id o
 
 Auto suggetion is enabled, however if not suggested you should move ahead and press enter to see the details.
 
-## How to get the API key?
+## Project Structure and Key Components
+### Main Project Files
 
-Create an account in https://www.themoviedb.org/, click on the `API` link from the left hand sidebar in your account settings and fill all the details to apply for API key. If you are asked for the website URL, just give "NA" if you don't have one. You will see the API key in your `API` sidebar once your request is approved.
+     main.py: Likely the main application file where the Flask server is set up, handling routes, and initiating the recommendation and sentiment analysis functions.
+     README.md: Contains project description, setup instructions, and usage details.
+     requirements.txt: Lists required Python libraries, allowing users to set up the environment with pip install -r requirements.txt.
+     Procfile: Used for deployment on platforms like Heroku, defining the process types.
 
-## How to run the project?
+### Datasets
+
+     datasets/ folder: Contains various CSV files (like data.csv, movie_metadata.csv, and main_data.csv) that store movie details and sentiment data needed for training and recommendations.
+     reviews.txt: Likely holds textual reviews for sentiment analysis.
+     
+### Models and Transformations
+
+     nlp_model.pkl and tranform.pkl: These files probably store the serialized Naive Bayes sentiment analysis model and the preprocessing transformations needed for text data.
+     
+### Jupyter Notebooks
+
+     Files in .ipynb_checkpoints/ (e.g., preprocessing.ipynb and sentiment.ipynb) seem to be Jupyter notebooks that contain exploratory data analysis, data cleaning, or model training details.
+     
+### Static Files
+
+     JavaScript: autocomplete.js and recommend.js handle front-end functionality for recommendations and search suggestions.
+     Images: image.jpg, krish-naik.PNG, and loader.gif are used for UI visuals.
+     CSS: style.css defines the styling for the application.
+### Templates
+
+     HTML: home.html and recommend.html define the structure and layout of the web pages served by Flask.
+     
+     
+## Summary of Key Features
+**Movie Recommendation:** Uses the TMDB API to fetch movie details.
+**Sentiment Analysis:** Implements a Naive Bayes model trained on movie reviews to analyze user sentiment.
+**Autocomplete Functionality:** Assists users in finding movie titles quickly.
+**Data Sources:** Combines local datasets and web-scraped reviews for a robust recommendation engine.
+
 
 1. Clone or download this repository to your local machine.
 2. Download "credits.csv" and "movies_metadata.csv" from "https://www.kaggle.com/rounakbanik/the-movies-dataset"
