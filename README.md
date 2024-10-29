@@ -2,6 +2,8 @@
 
 This project provides a comprehensive, integrated solution that combines a movie recommendation engine, information retrieval system, and sentiment analysis capabilities, all in one application.
 
+Tech Stack : Python, Flask, JavaScript, HTML, CSS, TMDB API, IMDb, BeautifulSoup, Pandas, Scikit-Learn, Cosine Similarity, Git, GitHub, Git LFS, Naive Bayes.
+
 The details of the movies(title, genre, runtime, rating, poster, etc) are fetched using an API by TMDB, 
 Fetching - Title, Genre, Runtime, Rating Movie Poster : TMDB API KEY (https://www.themoviedb.org/documentation/api)
 Revies Are Scrapped from : IMDB site using `beautifulsoup4` (using the IMDB id of the movie in the API)
