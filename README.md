@@ -33,7 +33,7 @@ Create an account in https://www.themoviedb.org/, click on the `API` link from t
 
 ## Architecture
 
-![Recommendation App](https://user-images.githubusercontent.com/36665975/168742738-5435cf76-1a42-4d87-94b4-999e5bfc48d3.png)
+![Adi Archetucture]([(https://github.com/Desaiadi/Reccomender-System-With-Sentiment-Analysis/blob/main/Architecture/Recomendation%20SystemWith%20Sentiment%20Analysis.jpg)[)
 
 ## Similarity Score : 
 
