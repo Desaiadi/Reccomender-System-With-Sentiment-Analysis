@@ -49,7 +49,7 @@ Auto suggetion is enabled, however if not suggested you should move ahead and pr
 ## Using this project
 
 1. Clone or download this repository to your local machine.
-2. Download "credits.csv" and "movies_metadata.csv" from "https://www.kaggle.com/datasets/adaiml/project-rec-sense-required-data-sets"
+2. Download "credits.csv" and "movies_metadata.csv" from my Kaggle Profile "https://www.kaggle.com/datasets/adaiml/project-rec-sense-required-data-sets"
 3. Install all the libraries mentioned in the [requirements.txt] file with the command `pip install -r requirements.txt`
      - If you still find some errors like - Something Did not found - try installing manually (e.g. pip install numpy)
 4. Get your API key from https://www.themoviedb.org/. 
