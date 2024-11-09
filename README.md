@@ -54,11 +54,11 @@ Auto suggetion is enabled, however if not suggested you should move ahead and pr
      - If you still find some errors like - Something Did not found - try installing manually (e.g. pip install numpy)
 4. Get your API key from https://www.themoviedb.org/. 
       Getting API KEY -
-                        1) Create Account on TMDB (https://www.themoviedb.org/)
-                        2) on Navigation Bar go to --> more --> API
-                        3) Choose Developer
-                        4) Fill all the details to request the key (Note* you can fill NA in "URL" field)
-                        5) After completing API Key should appear as a combination of numbers and letters 
+                        1. Create Account on TMDB (https://www.themoviedb.org/)
+                        2. on Navigation Bar go to --> more --> API
+                        3. Choose Developer
+                        4. Fill all the details to request the key (Note* you can fill NA in "URL" field)
+                        5. After completing API Key should appear as a combination of numbers and letters 
    
 3. Replace YOUR_API_KEY in **both** the places (line no. 15 and 29) of `static/recommend.js` file and hit save.
 4. Open your terminal/command prompt from your project directory and run the file `main.py` by executing the command `python main.py`.
