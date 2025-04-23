@@ -1,0 +1,197 @@
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 style="color:#e50914; text-align:center; font-weight:bold;">TWITTER SENTIMENT ANALYSIS</h2>
+      
+      <div style="background-color: rgba(0, 0, 0, 0.5); border-radius:10px; padding:20px; margin-top:20px;">
+        <div class="row">
+          <!-- Twitter Score Card -->
+          <div class="col-md-6">
+            <div style="display:flex; align-items:center;">
+              <i class="fab fa-twitter" style="color:#1DA1F2; font-size:24px; margin-right:10px;"></i>
+              <h5 style="color:white; margin:0;">Twitter Sentiment Score</h5>
+            </div>
+            
+            <div style="text-align:center; margin-top:20px;">
+              <h2 style="color:white; font-size:36px;">{{ twitter_sentiment.twitter.sentiment_score }}/10</h2>
+              
+              <div style="margin-top:15px;">
+                <span class="badge badge-success" style="background-color:#28a745; padding:5px 10px; margin:0 5px; font-size:14px;">
+                  {{ twitter_sentiment.twitter.positive }} Positive
+                </span>
+                <span class="badge badge-warning" style="background-color:#ffc107; padding:5px 10px; margin:0 5px; font-size:14px;">
+                  {{ twitter_sentiment.twitter.neutral }} Neutral
+                </span>
+                <span class="badge badge-danger" style="background-color:#dc3545; padding:5px 10px; margin:0 5px; font-size:14px;">
+                  {{ twitter_sentiment.twitter.negative }} Negative
+                </span>
+              </div>
+              
+              <p style="color:#e4e0e0; margin-top:15px;">
+                Based on {{ twitter_sentiment.twitter.content_count }} tweets about "{{ title }}"
+              </p>
+            </div>
+          </div>
+          
+          <!-- Sentiment Distribution -->
+          <div class="col-md-6">
+            <h5 style="color:white;">Sentiment Distribution</h5>
+            
+            <div style="text-align:center; margin-top:20px;">
+              <!-- This would typically be a chart, but for simplicity we'll use a text representation -->
+              <div style="display:flex; align-items:center; justify-content:center; height:100px;">
+                <!-- Positive portion -->
+                {% set positive_percent = (twitter_sentiment.twitter.positive / twitter_sentiment.twitter.content_count * 100) | round %}
+                <div style="background-color:#28a745; height:30px; width:{{ positive_percent }}%; border-radius:5px 0 0 5px;"></div>
+                
+                <!-- Neutral portion -->
+                {% set neutral_percent = (twitter_sentiment.twitter.neutral / twitter_sentiment.twitter.content_count * 100) | round %}
+                <div style="background-color:#ffc107; height:30px; width:{{ neutral_percent }}%;"></div>
+                
+                <!-- Negative portion -->
+                {% set negative_percent = (twitter_sentiment.twitter.negative / twitter_sentiment.twitter.content_count * 100) | round %}
+                <div style="background-color:#dc3545; height:30px; width:{{ negative_percent }}%; border-radius:0 5px 5px 0;"></div>
+              </div>
+              
+              <div style="display:flex; justify-content:space-between; margin-top:10px;">
+                <span style="color:#28a745;">{{ positive_percent }}%</span>
+                <span style="color:#ffc107;">{{ neutral_percent }}%</span>
+                <span style="color:#dc3545;">{{ negative_percent }}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sample Tweets Section -->
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <div style="background-color: rgba(0, 0, 0, 0.5); border-radius:10px; padding:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; align-items:center;">
+            <i class="fab fa-twitter" style="color:#1DA1F2; font-size:24px; margin-right:10px;"></i>
+            <h5 style="color:white; margin:0;">Sample Tweets</h5>
+          </div>
+          
+          <button id="toggleTweetsBtn" class="btn btn-sm btn-outline-light">Hide Tweets</button>
+        </div>
+        
+        <!-- Tweet Tab Navigation -->
+        <div style="margin-top:15px; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:10px;">
+          <button id="positiveTweetsBtn" class="btn btn-sm btn-success tweet-tab-btn active">Positive Tweets</button>
+          <button id="neutralTweetsBtn" class="btn btn-sm btn-warning tweet-tab-btn" style="margin:0 10px;">Neutral Tweets</button>
+          <button id="negativeTweetsBtn" class="btn btn-sm btn-danger tweet-tab-btn">Negative Tweets</button>
+        </div>
+        
+        <!-- Tweet Content -->
+        <div id="tweetsContainer" style="margin-top:15px;">
+          <!-- Positive Tweets -->
+          <div id="positiveTweets" class="tweet-category">
+            {% if twitter_sentiment.twitter.positive_tweets %}
+              {% for tweet in twitter_sentiment.twitter.positive_tweets %}
+                <div style="background-color:rgba(40, 167, 69, 0.1); border-left:4px solid #28a745; padding:10px; margin:10px 0; border-radius:5px;">
+                  <p style="color:#e4e0e0; margin:0;">{{ tweet }}</p>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p style="color:#e4e0e0; text-align:center;">No positive tweets available</p>
+            {% endif %}
+          </div>
+          
+          <!-- Neutral Tweets -->
+          <div id="neutralTweets" class="tweet-category" style="display:none;">
+            {% if twitter_sentiment.twitter.neutral_tweets %}
+              {% for tweet in twitter_sentiment.twitter.neutral_tweets %}
+                <div style="background-color:rgba(255, 193, 7, 0.1); border-left:4px solid #ffc107; padding:10px; margin:10px 0; border-radius:5px;">
+                  <p style="color:#e4e0e0; margin:0;">{{ tweet }}</p>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p style="color:#e4e0e0; text-align:center;">No neutral tweets available</p>
+            {% endif %}
+          </div>
+          
+          <!-- Negative Tweets -->
+          <div id="negativeTweets" class="tweet-category" style="display:none;">
+            {% if twitter_sentiment.twitter.negative_tweets %}
+              {% for tweet in twitter_sentiment.twitter.negative_tweets %}
+                <div style="background-color:rgba(220, 53, 69, 0.1); border-left:4px solid #dc3545; padding:10px; margin:10px 0; border-radius:5px;">
+                  <p style="color:#e4e0e0; margin:0;">{{ tweet }}</p>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p style="color:#e4e0e0; text-align:center;">No negative tweets available</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tweet Timeline Section -->
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <div style="background-color: rgba(0, 0, 0, 0.5); border-radius:10px; padding:20px;">
+        <h5 style="color:white;">Tweet Sentiment Timeline</h5>
+        
+        <div style="height:200px; margin-top:20px;">
+          <canvas id="tweetTimelineChart"></canvas>
+        </div>
+        
+        <p style="color:#e4e0e0; text-align:center; font-style:italic; margin-top:10px;">
+          Sentiment trends for "{{ title }}" over the past 7 days
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sentiment Comparison Section -->
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <div style="background-color: rgba(0, 0, 0, 0.5); border-radius:10px; padding:20px;">
+        <h5 style="color:white;">Sentiment Comparison</h5>
+        
+        <div class="row">
+          <div class="col-md-8">
+            <div style="height:200px; margin-top:20px;">
+              <canvas id="comparisonChart"></canvas>
+            </div>
+          </div>
+          
+          <div class="col-md-4 d-flex align-items-center">
+            <div>
+              <h6 style="color:white;">Twitter vs. IMDB Sentiment</h6>
+              <p style="color:#e4e0e0;">
+                {% if twitter_sentiment.twitter.sentiment_score > imdb_sentiment_score %}
+                  Twitter users have a more positive view of this movie compared to IMDB reviewers.
+                {% elif twitter_sentiment.twitter.sentiment_score < imdb_sentiment_score %}
+                  IMDB reviewers have a more positive view of this movie compared to Twitter users.
+                {% else %}
+                  Both Twitter users and IMDB reviewers have similar views on this movie.
+                {% endif %}
+              </p>
+              <p style="color:#e4e0e0;">
+                Twitter Sentiment: <strong>{{ twitter_sentiment.twitter.sentiment_score }}/10</strong><br>
+                IMDB Sentiment: <strong>{{ imdb_sentiment_score }}/10</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pass data to JavaScript -->
+<script>
+  const twitterSentimentScore = {{ twitter_sentiment.twitter.sentiment_score }};
+  const imdbSentimentScore = {{ imdb_sentiment_score }};
+</script>

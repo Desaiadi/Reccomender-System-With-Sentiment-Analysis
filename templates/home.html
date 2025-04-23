@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rec-Sense | Movie Recommendation System</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- Auto Complete -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css') }}">
+  <script type="text/javascript">
+    var films = {{suggestions|tojson}};
+  </script>
+
+  <style>
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background-color: #141414;
+      color: #ffffff;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+    }
+    
+    .main-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      width: 100%;
+    }
+    
+    .search-container {
+      width: 100%;
+      max-width: 800px; /* Increased container width */
+      text-align: left; /* Align content to the left */
+      margin: 0 auto;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+    
+    h1 {
+      --color-one: hsl(210 80% 50%);
+      --color-two: hsl(320 100% 75%);
+      --stretch-multiplier: 5;
+      font-size: clamp(1.5rem, 10vmin, 6rem); /* Reduced text size */
+      font-family: 'Poppins', sans-serif;
+      text-transform: uppercase;
+      display: grid;
+      line-height: 1;
+      margin-bottom: 30px;
+      text-align: left; /* Align text to the left */
+      justify-content: start; /* Align grid items to the start */
+    }
+    
+    /* Target the "Emotions" block */
+    .search-container h1 [aria-hidden="true"] {
+      color: #ffffff;
+      font-size: 0.8em; /* Make sure all text is the same size */
+      justify-content: flex-start; /* Align internally to the left */
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;  
+    }
+    
+    [aria-hidden] {
+      display: flex;
+      gap: 0.02ch;
+      align-items: center;
+      color: black;
+    }
+    
+    .stretch-o {
+      height: 0.8em; /* Match the height to the font size */
+      width: calc(var(--stretch) * 1.16ch);
+      border: 0.25ch solid #ffffff;
+      border-radius: 1ch;
+      transition: width 0.2s;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+    }
+    
+    h1 {
+      --stretch: 1;
+    }
+    
+    h1:hover {
+      --stretch: var(--stretch-multiplier);
+    }
+    
+    .stretch-o:after,
+    .stretch-o:before {
+      content: "";
+      border: 0.25ch solid var(--color);
+      position: absolute;
+      inset: -0.25ch;
+      border-radius: 1ch;
+      opacity: calc(-1 + var(--stretch));
+      transition: opacity 0.2s;
+    }
+    
+    .stretch-o:before {
+      --color: var(--color-one);
+    }
+    
+    .stretch-o:after {
+      --color: var(--color-two);
+      mask: radial-gradient(circle at top left, black, transparent);
+    }
+
+    .description {
+      margin: 30px auto;
+      max-width: 700px;
+      text-align: center;
+      line-height: 1.6;
+    }
+    
+    .description h2 {
+      font-size: 2rem;
+      color: #ffffff;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    
+    .footer {
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      margin-top: auto;
+    }
+    
+    .social-icons {
+      margin-top: 15px;
+    }
+    
+    .social-icons a {
+      color: #ffffff;
+      font-size: 24px;
+      margin: 0 10px;
+      transition: color 0.3s;
+    }
+    
+    .social-icons a:hover {
+      color: #e50914;
+    }
+    
+    .movie-button {
+      background-color: #e50914;
+      border-color: #e50914;
+      width: 120px;
+      border-radius: 50px;
+      margin-top: 10px;
+    }
+    
+    .movie-button:hover {
+      background-color: #b2070e;
+      border-color: #b2070e;
+    }
+    
+    .form-group input {
+      border-radius: 50px;
+      padding: 12px 20px;
+      font-size: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%; /* Make input take full width of container */
+      max-width: 100%; /* Ensure it doesn't expand beyond container */
+    }
+    
+    .shadow-textarea {
+      width: 100%; /* Make container take full width */
+    }
+    
+    /* Fix for loader and results display */
+    #loader, .fail, .results {
+      width: 100%;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body id="content">
+  <div class="main-container">
+    <div class="search-container">
+      <h1>
+        <span>Where</span>
+        <span class="sr-only">Em</span>
+        <span aria-hidden="true">
+          <span>Em</span>
+          <span class="stretch-o"></span>
+          <span>tions</span>
+        </span>
+        <span>Meet Analytics</span>
+      </h1>
+      
+      <div class="form-group shadow-textarea">
+        <input type="text" name="movie" class="movie form-control" id="autoComplete" autocomplete="off" placeholder="Type a movie title..." style="background-color: #ffffff; border-color:#ffffff; color: #181818" required="required" />
+      </div>
+
+      <div class="form-group" style="text-align: center;">
+        <button class="btn btn-primary movie-button" disabled="true">Search</button>
+      </div>
+      
+      <div class="description">
+        <h2>Rec-Sense</h2>
+        <h2>Recommendations that make Sense</h2>
+        <p>Discover hidden cinematic gems with Rec-Sense's intelligent, sentiment-driven engine. Enter a movie you love, and our machine learning algorithms analyze its content and mood to reveal films that truly match your taste—beyond just genre or cast. Plus, explore visualized social analytics and recent discussions to see what the community is buzzing about.</p>
+      </div>
+    </div>
+
+    <div id="loader" class="text-center"></div>
+    
+    <div class="fail" style="display: none;">
+      <h3>Sorry! The movie you requested is not in our database. Please check the spelling or try with other movies!</h3>
+    </div>
+
+    <div class="results" style="display: none;">
+      <h2 id="name" class="text-uppercase"></h2>
+    </div>
+    
+    <div class="footer">
+      <div>All copyright reserved by @Aditya_Desai</div>
+      <div class="social-icons">
+        <a href="https://github.com/Desaiadi" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/aditya-desai-871076210/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://medium.com/@adityadesai2001" target="_blank"><i class="fab fa-medium"></i></a>
+        <a href="mailto:desaiadiofficial@gmail.com"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/js/autoComplete.min.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='autocomplete.js')}}"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='recommend.js')}}"></script>
+</body>
+</html>

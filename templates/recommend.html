@@ -1,0 +1,696 @@
+<!---- Old Reccomend . html ------------------------------------------------ ---->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>NEW</title>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+  
+<!-- Include sentiment.js -->
+<script type="text/javascript" src="{{ url_for('static', filename='sentiment.js') }}"></script>
+
+  <style>
+    /* Twitter sentiment styles */
+    .sentiment-score {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .social-card {
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      background-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .social-icon {
+      font-size: 24px;
+      margin-right: 10px;
+    }
+    
+    .twitter-icon {
+      color: #1DA1F2;
+    }
+    
+    .sentiment-gauge {
+      position: relative;
+      width: 120px;
+      height: 60px;
+      margin: 0 auto;
+    }
+    
+    .score-display {
+      position: absolute;
+      top: 70%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+    }
+    
+    .sample-content {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 5px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+    
+    .sample-item {
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .sample-item:last-child {
+      border-bottom: none;
+    }
+    
+    .section-divider {
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      margin: 30px 0;
+    }
+    
+    .positive-tweets .sample-item {
+      border-left: 3px solid #28a745;
+      padding-left: 10px;
+    }
+    
+    .neutral-tweets .sample-item {
+      border-left: 3px solid #ffc107;
+      padding-left: 10px;
+    }
+    
+    .negative-tweets .sample-item {
+      border-left: 3px solid #dc3545;
+      padding-left: 10px;
+    }
+    
+    .badge {
+      padding: 5px 10px;
+      font-size: 14px;
+      border-radius: 15px;
+      margin: 0 3px;
+    }
+  </style>
+
+  <!-- Add these in the head section -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+
+</head>
+
+<body id="content">
+	<div class="results">
+	    <center>
+	      <h2 id="name" class="text-uppercase">{{title}}</h2>
+	    </center>
+	</div>
+	<br>
+
+<div id="mycontent">
+    <div id="mcontent">
+      <div class="poster-lg">
+        <img class="poster" style="border-radius: 40px;margin-left: 90px;" height="400" width="250" src={{poster}}>
+      </div>
+      <div class="poster-sm text-center">
+        <img class="poster" style="border-radius: 40px;margin-bottom: 5%;" height="400" width="250" src={{poster}}>
+      </div>
+      <div id="details">
+        <br/>
+        <h6 id="title" style="color:white;">TITLE: &nbsp;{{title}}</h6>
+        <h6 id="overview" style="color:white;max-width: 85%">OVERVIEW: <br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{overview}}</h6>
+        <h6 id="vote_average" style="color:white;">RATING: &nbsp;{{vote_average}}/10 ({{vote_count}} votes)</h6>
+        <h6 id="genres" style="color:white;">GENRE: &nbsp;{{genres}}</h6>
+        <h6 id="date" style="color:white;">RELEASE DATE: &nbsp;{{release_date}}</h6>
+        <h6 id="runtime" style="color:white;">RUNTIME: &nbsp;{{runtime}}</h6>
+        <h6 id="status" style="color:white;">STATUS: &nbsp;{{status}}</h6>
+      </div>
+    </div>
+</div>
+<br/>
+	
+{% for name, details in cast_details.items() if not cast_details.hidden %}
+  <div class="modal fade" id="{{details[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #e50914;color: white;">
+          <h5 class="modal-title" id="exampleModalLabel3">{{name}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: white">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <img class="profile-pic" src="{{details[1]}}" alt="{{name}} - profile" style="width: 250px;height:400px;border-radius: 10px;" />
+          <div style="margin-left: 20px">
+            <p><strong>Birthday:</strong> {{details[2]}} </p>
+            <p><strong>Place of Birth:</strong> {{details[3]}} </p>
+            <p> 
+              <p><strong>Biography:</strong><p>
+              {{details[4]}}
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+    
+
+  {% if casts|length > 1 %}
+  <div class="movie" style="color: #E8E8E8;">
+    	<center>
+		<h3>TOP CAST</h3>
+		<h5>(Click on the cast to know more)</h5>
+	</center>
+  </div>
+
+  <div class="movie-content">
+        {% for name, details in casts.items() if not casts.hidden %}
+          <div class="castcard card" style="width: 15rem;" title="Click to know more about {{name}}" data-toggle="modal" data-target="#{{details[0]}}">
+            <div class="imghvr">
+              <img class="card-img-top cast-img" id="{{details[0]}}" height="360" width="240" alt="{{name}} - profile" src="{{details[2]}}">
+              <figcaption class="fig">
+                <button class="card-btn btn btn-danger"> Know More </button>
+              </figcaption>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{name|title}}</h5>
+              <h5 class="card-title"><span style="color:#756969;font-size: 20px;">Character: {{details[1]|title}}</span></h5>
+            </div>
+          </div>
+      {% endfor %}
+    </div>
+{% endif %}
+
+  <!-- Add this after movie details and before cast section -->
+  <div class="section-divider"></div>
+  
+  <!-- Twitter Sentiment Analysis Section -->
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <div class="col-md-12">
+        <center>
+          <h2 style="color:white" class="mb-4">TWITTER SENTIMENT ANALYSIS</h2>
+        </center>
+        
+        <div class="social-card">
+          <div class="row">
+            <!-- Twitter Score Card -->
+            <div class="col-md-6">
+              <h5 style="color:white">
+                <i class="fab fa-twitter social-icon twitter-icon"></i> Twitter Sentiment Score
+              </h5>
+              <div class="sentiment-gauge text-center">
+                <canvas id="twitterGauge"></canvas>
+                <div class="score-display">{{ twitter_sentiment.twitter.sentiment_score }}/10</div>
+              </div>
+              <div class="text-center mt-3" style="color:white">
+                <span class="badge badge-success">{{ twitter_sentiment.twitter.positive }} Positive</span>
+                <span class="badge badge-warning">{{ twitter_sentiment.twitter.neutral }} Neutral</span>
+                <span class="badge badge-danger">{{ twitter_sentiment.twitter.negative }} Negative</span>
+              </div>
+              <p class="text-center mt-3" style="color:#e4e0e0">
+                Based on {{ twitter_sentiment.twitter.content_count }} tweets about "{{ title }}"
+              </p>
+            </div>
+            
+            <!-- Twitter Sentiment Distribution Chart -->
+            <div class="col-md-6">
+              <h5 style="color:white">Sentiment Distribution</h5>
+              <canvas id="sentimentDistributionChart" style="height: 250px;"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tweet Samples Section -->
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="social-card">
+          <h5 style="color:white">
+            <i class="fab fa-twitter social-icon twitter-icon"></i> Sample Tweets
+            <button id="toggleTweetsBtn" class="btn btn-sm btn-outline-light float-right" onclick="toggleTweetDisplay()">
+              Hide Tweets
+            </button>
+          </h5>
+          
+          <div class="row mt-3" id="tweetSamplesContainer">
+            <!-- Positive Tweets Column -->
+            <div class="col-md-4">
+              <h6 style="color: #28a745;">
+                <i class="fas fa-smile mr-2"></i> Positive Tweets
+              </h6>
+              <div class="sample-content positive-tweets">
+                {% if twitter_sentiment.twitter.positive_examples %}
+                  {% for tweet in twitter_sentiment.twitter.positive_examples %}
+                    <div class="sample-item" style="color:#e4e0e0">
+                      <i class="fas fa-quote-left text-muted mr-1"></i>
+                      {{ tweet }}
+                      <i class="fas fa-quote-right text-muted ml-1"></i>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <div class="sample-item" style="color:#e4e0e0">No positive tweet examples available</div>
+                {% endif %}
+              </div>
+            </div>
+            
+            <!-- Neutral Tweets Column -->
+            <div class="col-md-4">
+              <h6 style="color: #ffc107;">
+                <i class="fas fa-meh mr-2"></i> Neutral Tweets
+              </h6>
+              <div class="sample-content neutral-tweets">
+                {% if twitter_sentiment.twitter.neutral_examples %}
+                  {% for tweet in twitter_sentiment.twitter.neutral_examples %}
+                    <div class="sample-item" style="color:#e4e0e0">
+                      <i class="fas fa-quote-left text-muted mr-1"></i>
+                      {{ tweet }}
+                      <i class="fas fa-quote-right text-muted ml-1"></i>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <div class="sample-item" style="color:#e4e0e0">No neutral tweet examples available</div>
+                {% endif %}
+              </div>
+            </div>
+            
+            <!-- Negative Tweets Column -->
+            <div class="col-md-4">
+              <h6 style="color: #dc3545;">
+                <i class="fas fa-frown mr-2"></i> Negative Tweets
+              </h6>
+              <div class="sample-content negative-tweets">
+                {% if twitter_sentiment.twitter.negative_examples %}
+                  {% for tweet in twitter_sentiment.twitter.negative_examples %}
+                    <div class="sample-item" style="color:#e4e0e0">
+                      <i class="fas fa-quote-left text-muted mr-1"></i>
+                      {{ tweet }}
+                      <i class="fas fa-quote-right text-muted ml-1"></i>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <div class="sample-item" style="color:#e4e0e0">No negative tweet examples available</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tweet Timeline Section -->
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="social-card">
+          <h5 style="color:white" class="mb-3">Tweet Sentiment Timeline</h5>
+          <div style="height: 250px;">
+            <canvas id="tweetTimelineChart"></canvas>
+          </div>
+          <p class="text-center mt-2" style="color:#e4e0e0; font-style: italic;">
+            Sentiment trends for "{{ title }}" over the past 7 days
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+<!-- YouTube Reviews Section - Direct Rendering Fallback -->
+{% if youtube_sentiment and youtube_sentiment.youtube and youtube_sentiment.youtube.reviews %}
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <center>
+        <h2 style="color:white" class="mb-4">YOUTUBE REVIEWS ANALYSIS</h2>
+      </center>
+      
+      <div class="social-card">
+        <div class="row">
+          <!-- YouTube Score Card -->
+          <div class="col-md-6">
+            <h5 style="color:white">
+              <i class="fab fa-youtube social-icon" style="color: #FF0000;"></i> YouTube Sentiment Score
+            </h5>
+            <div class="sentiment-gauge text-center">
+              <div style="font-size: 36px; font-weight: bold; color: white;">
+                {{ youtube_sentiment.youtube.sentiment_score }}/10
+              </div>
+            </div>
+            <div class="text-center mt-3" style="color:white">
+              <span class="badge badge-success">{{ youtube_sentiment.youtube.positive }} Positive</span>
+              <span class="badge badge-warning">{{ youtube_sentiment.youtube.neutral }} Neutral</span>
+              <span class="badge badge-danger">{{ youtube_sentiment.youtube.negative }} Negative</span>
+            </div>
+            <p class="text-center mt-3" style="color:#e4e0e0">
+              Based on analysis of {{ youtube_sentiment.youtube.content_count }} YouTube review{{ 's' if youtube_sentiment.youtube.content_count != 1 else '' }}
+            </p>
+          </div>
+          
+          <!-- Simple Review List -->
+          <div class="col-md-6">
+            <h5 style="color:white">Review Summaries</h5>
+            <div style="max-height: 300px; overflow-y: auto;">
+              {% for review in youtube_sentiment.youtube.reviews %}
+                <div class="mb-3 p-3" style="background-color: rgba({{ '40, 167, 69' if review.sentiment == 'positive' else '255, 193, 7' if review.sentiment == 'neutral' else '220, 53, 69' }}, 0.2); border-radius: 8px;">
+                  <h6 style="color:white">{{ review.title }}</h6>
+                  <p style="font-size: 0.8rem; color: #aaaaaa;">{{ review.channel }}</p>
+                  <p style="color:#e4e0e0">{{ review.summary }}</p>
+                  <div style="text-align: right;">
+                    <a href="{{ review.url }}" target="_blank" class="btn btn-sm btn-dark">Watch on YouTube</a>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- IMDB Reviews Section -->
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <center>
+        <h2 style="color:white" class="mb-4">IMDB USER REVIEWS</h2>
+      </center>
+
+      <div class="social-card">
+        <!-- IMDB Score Card -->
+        <div class="row mb-4">
+          <div class="col-md-4 text-center">
+            <div style="background-color: rgba(245, 197, 24, 0.2); padding: 15px; border-radius: 10px;">
+              <i class="fas fa-star" style="font-size: 28px; color: #F5C518;"></i>
+              <h3 style="color:white">{{ imdb_sentiment_score }}/10</h3>
+              <p style="color:#e4e0e0">IMDB Sentiment Score</p>
+            </div>
+          </div>
+          
+          <div class="col-md-4 text-center">
+            <div style="background-color: rgba(40, 167, 69, 0.2); padding: 15px; border-radius: 10px;">
+              <i class="fas fa-thumbs-up" style="font-size: 28px; color: #28a745;"></i>
+              {% set positive_count = reviews.values()|select("equalto", "Good")|list|length %}
+              <h3 style="color:white">{{ positive_count }}</h3>
+              <p style="color:#e4e0e0">Positive Reviews</p>
+            </div>
+          </div>
+          
+          <div class="col-md-4 text-center">
+            <div style="background-color: rgba(220, 53, 69, 0.2); padding: 15px; border-radius: 10px;">
+              <i class="fas fa-thumbs-down" style="font-size: 28px; color: #dc3545;"></i>
+              {% set negative_count = reviews.values()|select("equalto", "Bad")|list|length %}
+              <h3 style="color:white">{{ negative_count }}</h3>
+              <p style="color:#e4e0e0">Negative Reviews</p>
+            </div>
+          </div>
+        </div>
+        
+        {% if reviews %}
+        <!-- Reviews Table -->
+        <h5 style="color:white" class="mb-3">Review Comments</h5>
+        <div class="table-responsive">
+          <table class="table table-bordered" bordercolor="white" style="color:white">
+            <thead>
+              <tr style="background-color: rgba(0, 0, 0, 0.3);">
+                <th class="text-center" scope="col" style="width: 75%">Comments</th>
+                <th class="text-center" scope="col">Sentiment</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for review, status in reviews.items() if not reviews.hidden %}
+              <tr style="background-color: {% if status == 'Good' %}rgba(40, 167, 69, 0.2){% else %}rgba(220, 53, 69, 0.2){% endif %};">
+                <td>{{review}}</td>
+                <td class="text-center">
+                  {{status}} 
+                  {% if status == 'Good' %}
+                    <i class="fas fa-smile" style="color: #28a745;"></i>
+                  {% else %}
+                    <i class="fas fa-frown" style="color: #dc3545;"></i>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="text-center p-4">
+          <h5 style="color:white">No reviews available for this movie yet.</h5>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Comparison Section -->
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="social-card">
+          <h5 style="color:white" class="mb-3">Sentiment Comparison</h5>
+          <div class="row">
+            <!-- Twitter vs IMDB Chart -->
+            <div class="col-md-8">
+              <canvas id="comparisonChart"></canvas>
+            </div>
+            <!-- Summary -->
+            <div class="col-md-4 d-flex align-items-center">
+              <div>
+                <h6 style="color:white">Twitter vs. IMDB Sentiment</h6>
+                <p style="color:#e4e0e0">
+                  {% if twitter_sentiment.twitter.sentiment_score > imdb_sentiment_score %}
+                    Twitter users have a more positive view of this movie compared to IMDB reviewers.
+                  {% elif twitter_sentiment.twitter.sentiment_score < imdb_sentiment_score %}
+                    IMDB reviewers have a more positive view of this movie compared to Twitter users.
+                  {% else %}
+                    Both Twitter users and IMDB reviewers have similar views on this movie.
+                  {% endif %}
+                </p>
+                <p style="color:#e4e0e0">
+                  Twitter Sentiment: <strong>{{ twitter_sentiment.twitter.sentiment_score }}/10</strong><br>
+                  IMDB Sentiment: <strong>{{ imdb_sentiment_score }}/10</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+
+
+
+
+
+<!-- Visualization JavaScript -->
+<script>
+  // Sentiment data for charts
+  const twitterSentimentScore = {{ twitter_sentiment.twitter.sentiment_score }};
+  const imdbSentimentScore = {{ imdb_sentiment_score }};
+  const positiveCount = {{ twitter_sentiment.twitter.positive }};
+  const neutralCount = {{ twitter_sentiment.twitter.neutral | default(0) }};
+  const negativeCount = {{ twitter_sentiment.twitter.negative }};
+  
+  // Timeline data if available
+  {% if twitter_sentiment.twitter.timeline %}
+  const twitterTimeline = {
+    dates: {{ twitter_sentiment.twitter.timeline.dates | tojson }},
+    positive: {{ twitter_sentiment.twitter.timeline.positive | tojson }},
+    neutral: {{ twitter_sentiment.twitter.timeline.neutral | tojson }},
+    negative: {{ twitter_sentiment.twitter.timeline.negative | tojson }}
+  };
+  {% endif %}
+  
+  // Create sentiment distribution chart
+  document.addEventListener('DOMContentLoaded', function() {
+    // Create sentiment distribution chart
+    const distributionCtx = document.getElementById('sentimentDistributionChart');
+    if (distributionCtx) {
+      new Chart(distributionCtx, {
+        type: 'pie',
+        data: {
+          labels: ['Positive', 'Neutral', 'Negative'],
+          datasets: [{
+            data: [positiveCount, neutralCount, negativeCount],
+            backgroundColor: [
+              'rgba(40, 167, 69, 0.7)',   // Green for positive
+              'rgba(255, 193, 7, 0.7)',   // Yellow for neutral
+              'rgba(220, 53, 69, 0.7)'    // Red for negative
+            ],
+            borderColor: [
+              'rgb(40, 167, 69)',
+              'rgb(255, 193, 7)',
+              'rgb(220, 53, 69)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: 'white',
+                padding: 10,
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.raw || 0;
+                  const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                  const percentage = Math.round((value / total) * 100);
+                  return `${label}: ${value} tweets (${percentage}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+    
+    // Create comparison chart
+    const comparisonCtx = document.getElementById('comparisonChart');
+    if (comparisonCtx) {
+      new Chart(comparisonCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Twitter Sentiment', 'IMDB Sentiment'],
+          datasets: [{
+            label: 'Sentiment Score (0-10)',
+            data: [{{ twitter_sentiment.twitter.sentiment_score }}, {{ imdb_sentiment_score }}],
+            backgroundColor: [
+              'rgba(29, 161, 242, 0.7)',  // Twitter blue
+              'rgba(245, 197, 24, 0.7)'   // IMDB yellow
+            ],
+            borderColor: [
+              'rgb(29, 161, 242)',
+              'rgb(245, 197, 24)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 10,
+              title: {
+                display: true,
+                text: 'Sentiment Score',
+                color: 'white'
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              },
+              ticks: {
+                color: 'white'
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                color: 'white'
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+    }
+  });
+  
+  // Function to toggle tweet display
+  function toggleTweetDisplay() {
+    const container = document.getElementById('tweetSamplesContainer');
+    const btn = document.getElementById('toggleTweetsBtn');
+    
+    if (container.style.display === 'none') {
+      container.style.display = '';
+      btn.textContent = 'Hide Tweets';
+    } else {
+      container.style.display = 'none';
+      btn.textContent = 'Show Tweets';
+    }
+  }
+</script>
+
+
+
+      {% if movie_cards|length > 1 %}
+      <div class="movie" style="color: #E8E8E8;">
+      <center><h3>RECOMMENDED MOVIES FOR YOU</h3><h5>(Click any of the movies to get recommendation)</h5></center>
+    </div>
+
+    <div class="movie-content">
+      {% for poster, title in movie_cards.items() if not movie_cards.hidden %}
+        <div class="card" style="width: 15rem;" title="{{title}}" onclick="recommendcard(this)">
+          <div class="imghvr">
+            <img class="card-img-top" height="360" width="240" alt="{{title}} - poster" src={{poster}}>
+            <figcaption class="fig">
+              <button class="card-btn btn btn-danger"> Click Me </button>
+            </figcaption>
+           </div>
+          <div class="card-body">
+            <h5 class="card-title">{{title|capitalize}}</h5>
+          </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    {% endif %}
+
+    
+    </div>
+  </div>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='recommend.js')}}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
