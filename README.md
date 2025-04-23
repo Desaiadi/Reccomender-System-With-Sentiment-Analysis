@@ -142,7 +142,7 @@ This project is a comprehensive movie recommendation system that combines conten
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/movie-recommendation-system.git
+   git clone https://github.com/Desaiadi/Reccomender-System-With-Sentiment-Analysis.git
    cd movie-recommendation-system
    ```
 
@@ -265,14 +265,10 @@ This project is a comprehensive movie recommendation system that combines conten
 
 ## Contributors
 
-- Your Name - [your.email@example.com](mailto:your.email@example.com)
+- Your Name - [desaiadiofficial@gmail.com](mailto:your.email@example.com)
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Acknowledgments
 
-- TMDB API for movie data
-- scikit-learn team for machine learning tools
-- Flask for the web framework
