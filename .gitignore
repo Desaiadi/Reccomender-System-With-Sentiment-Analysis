@@ -2,3 +2,4 @@ credits.csv
 movies_metadata.csv
 datasets/credits.csv
 datasets/movies_metadata.csv
+.env
