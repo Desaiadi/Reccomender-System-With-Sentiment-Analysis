@@ -195,18 +195,9 @@ class TwitterSentiment:
             # Twitter API credentials (using environment variables for security)
             # You should set these environment variables in your production environment
             # For development, we'll use the provided values
-            bearer_token = os.environ.get(
-                "TWITTER_BEARER_TOKEN",
-                "AAAAAAAAAAAAAAAAAAAAAOSW0gEAAAAAZW9RQee%2FW%2FQs4FQGvqJXbVIdueg%3Dy67R8bRCuuBsXZPkz8LvYfelQCelojKg8Jb0HmQsgSCwqynhF6",
-            )
-            access_token = os.environ.get(
-                "TWITTER_ACCESS_TOKEN",
-                "1432329973226897410-WQgU60wO7J7yoLWMCZI20xNTc9EtzF",
-            )
-            access_token_secret = os.environ.get(
-                "TWITTER_ACCESS_TOKEN_SECRET",
-                "uaHtWWnUd0MXQOs0dT7oobbzPUmIk4US9eAloKMD8k1Gd",
-            )
+            bearer_token = os.environ.get("TWITTER_BEARER_TOKEN")
+            access_token = os.environ.get("TWITTER_ACCESS_TOKEN")
+            access_token_secret = os.environ.get("TWITTER_ACCESS_TOKEN_SECRET")
 
             # Initialize the Tweepy Client
             client = tweepy.Client(
